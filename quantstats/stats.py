@@ -521,7 +521,13 @@ def cagr(returns, rf=0.0, compounded=True, periods=252):
     else:
         total = _np.sum(total, axis=0)
 
-    years = (returns.index[-1] - returns.index[0]).days / periods
+    
+    if periods==252:
+        """ Number of Trading days in single calendar year is 252 and return dataframe having only trading days data """
+        years = len(returns) / periods
+    else:
+        """ When we calculating number days between first and last record means we getting all calendar days then we need to divided by 365 days instead of 252 days """
+        years = (returns.index[-1] - returns.index[0]).days / 365
 
     res = abs(total + 1.0) ** (1.0 / years) - 1
 
